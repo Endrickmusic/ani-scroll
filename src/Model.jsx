@@ -20,7 +20,6 @@ export default function Model({ ...props }) {
 
         const scroll = scrolling.offset
 
-        console.log(scroll)
         actions["CameraAction.005"].time = MathUtils.lerp(actions["CameraAction.005"].time, actions["CameraAction.005"].getClip().duration * scroll, 0.05)
         group.current.children[0].children.forEach((child, index) => {
         //   child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020"), hovered ? 0.1 : 0.05)

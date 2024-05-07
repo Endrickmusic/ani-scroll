@@ -20,14 +20,13 @@ export default function App() {
         <color 
           attach="background" 
           args={["#222222"]} />
-      <ambientLight intensity={1} />
+      <ambientLight intensity={0.1} />
 
-      <ScrollControls>
+      <ScrollControls pages={4}>
           <Model />
 
-        <Scroll html>
+
           <Overlay />
-        </Scroll>
       
 
       </ScrollControls>
