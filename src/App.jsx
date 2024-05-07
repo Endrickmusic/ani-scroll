@@ -4,16 +4,11 @@ import { Environment, useScroll, ScrollControls, Scroll } from "@react-three/dre
 
 import './index.css'
 
-import Experience from "./Experience.jsx"
 import Model from "./Model.jsx"
 import Overlay from "./Overlay.jsx"
 
 
 export default function App() {
-
-  const overlay = useRef()
-  const caption = useRef()
-  const scroll = useRef(0.1)
 
  return (
   <>
@@ -27,12 +22,19 @@ export default function App() {
           args={["#222222"]} />
       <ambientLight intensity={1} />
 
+      <ScrollControls>
+          <Model />
 
-          <Model scroll={scroll}/>
+        <Scroll html>
+          <Overlay />
+        </Scroll>
+      
+
+      </ScrollControls>
 
       </Canvas>
     
-    <Overlay scroll={scroll} caption={caption} ref={overlay}/>
+    
   
   </>
   )

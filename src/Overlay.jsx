@@ -1,16 +1,7 @@
-import { forwardRef } from "react"
-
-const Overlay = forwardRef(({ caption, scroll }, ref) => {
+const Overlay = (() => {
 
   return (
-    <div
-      ref={ref}
-      onScroll={(e) => {
-        scroll.current = e.target.scrollTop / (e.target.scrollHeight - window.innerHeight);
-        caption.current.innerText = scroll.current.toFixed(2);
-      }}
-      className="scroll"
-    >
+    <div className="scroll" >
       <div style={{ height: "400vh" }}>
         <div className="dot">
           <h1>headset</h1>
