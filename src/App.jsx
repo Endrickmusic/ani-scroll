@@ -11,7 +11,9 @@ import Overlay from "./Overlay.jsx"
 
 export default function App() {
 
-
+  const overlay = useRef()
+  const caption = useRef()
+  const scroll = useRef(0.1)
 
  return (
   <>
@@ -25,12 +27,12 @@ export default function App() {
           args={["#222222"]} />
       <ambientLight intensity={1} />
 
-      <ScrollControls pages={4} damping={0.1}>
-          <Model />
-      </ScrollControls>
-    </Canvas>
+
+          <Model scroll={scroll}/>
+
+      </Canvas>
     
-    <Overlay />
+    <Overlay scroll={scroll} caption={caption} ref={overlay}/>
   
   </>
   )

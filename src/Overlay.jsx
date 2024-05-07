@@ -1,13 +1,10 @@
-import { useRef } from "react"
+import { forwardRef } from "react"
 
-const Overlay = () => {
-  const overlay = useRef()
-  const caption = useRef()
-  const scroll = useRef(0)
+const Overlay = forwardRef(({ caption, scroll }, ref) => {
 
   return (
     <div
-      ref={overlay}
+      ref={ref}
       onScroll={(e) => {
         scroll.current = e.target.scrollTop / (e.target.scrollHeight - window.innerHeight);
         caption.current.innerText = scroll.current.toFixed(2);
@@ -58,7 +55,8 @@ const Overlay = () => {
         0.00
       </span>
     </div>
-  );
-};
+  )
+}
+)
 
 export default Overlay;

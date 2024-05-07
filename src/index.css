@@ -26,7 +26,6 @@ body,
   left: 0;
   overflow-y: auto;
   scroll-snap-type: y proximity;
-  pointer-events: none;
 }
 
 .scroll > div {
