@@ -1,6 +1,6 @@
 import { useRef } from "react"  
 import { Canvas } from "@react-three/fiber"
-import { Environment, useScroll, ScrollControls, Scroll } from "@react-three/drei"
+import { Environment, ScrollControls } from "@react-three/drei"
 
 import './index.css'
 
