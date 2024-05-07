@@ -1,16 +1,24 @@
 
-import { useRef } from "react"
+import { useRef, useEffect } from "react"
+import { MathUtils } from "three"
 import { useFrame } from "@react-three/fiber"
-import { useGLTF, useAnimations, PerspectiveCamera } from "@react-three/drei"
+import { useGLTF, useAnimations, PerspectiveCamera, useScroll } from "@react-three/drei"
 
-export default function Model({ scroll, ...props }) {
+export default function Model({ ...props }) {
+
     const group = useRef()
+    const scrolling = useScroll()
     const { nodes, materials, animations } = useGLTF("./models/model.glb")
+    const { actions } = useAnimations(animations, group)
 
     const extras = { receiveShadow: true, castShadow: true, "material-envMapIntensity": 0.2 }
 
+    useEffect(() => void (actions["CameraAction.005"].play().paused = true), [])
+
     useFrame((state) => {
-        // actions["CameraAction.005"].time = THREE.MathUtils.lerp(actions["CameraAction.005"].time, actions["CameraAction.005"].getClip().duration * scroll.current, 0.05)
+        const scroll = scrolling.offset
+        console.log(scroll)
+        actions["CameraAction.005"].time = MathUtils.lerp(actions["CameraAction.005"].time, actions["CameraAction.005"].getClip().duration * scroll, 0.05)
         group.current.children[0].children.forEach((child, index) => {
         //   child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020"), hovered ? 0.1 : 0.05)
           const et = state.clock.elapsedTime
