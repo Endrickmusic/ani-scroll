@@ -1,52 +1,78 @@
-
 import { useRef, useEffect } from "react"
 import { MathUtils } from "three"
 import { useFrame } from "@react-three/fiber"
-import { useGLTF, useAnimations, PerspectiveCamera, useScroll } from "@react-three/drei"
+import {
+  useGLTF,
+  useAnimations,
+  OrthographicCamera,
+  useScroll,
+} from "@react-three/drei"
 
 export default function Model({ ...props }) {
+  const group = useRef()
+  const { nodes, materials, animations } = useGLTF("./models/ortho_01.glb")
+  const { actions } = useAnimations(animations, group)
 
-    const group = useRef()
-    const { nodes, materials, animations } = useGLTF("./models/model.glb")
-    const { actions } = useAnimations(animations, group)
+  const scrolling = useScroll()
 
-    const scrolling = useScroll()
+  const extras = {
+    receiveShadow: true,
+    castShadow: true,
+    "material-envMapIntensity": 0.2,
+  }
 
-    const extras = { receiveShadow: true, castShadow: true, "material-envMapIntensity": 0.2 }
+  console.log(actions)
 
-    useEffect(() => void (actions["CameraAction.005"].play().paused = true), [])
+  useEffect(() => void (actions["CameraAction"].play().paused = true), [])
 
-    useFrame((state) => {
+  useFrame((state) => {
+    const scroll = scrolling.offset
 
-        const scroll = scrolling.offset
+    actions["CameraAction"].time = MathUtils.lerp(
+      actions["CameraAction"].time,
+      actions["CameraAction"].getClip().duration * scroll,
+      0.05
+    )
+  })
 
-        actions["CameraAction.005"].time = MathUtils.lerp(actions["CameraAction.005"].time, actions["CameraAction.005"].getClip().duration * scroll, 0.05)
-        group.current.children[0].children.forEach((child, index) => {
-        //   child.material.color.lerp(color.set(hovered === child.name ? "tomato" : "#202020"), hovered ? 0.1 : 0.05)
-          const et = state.clock.elapsedTime
-          child.position.y = Math.sin((et + index * 2000) / 2) * 1
-          child.rotation.x = Math.sin((et + index * 2000) / 3) / 10
-          child.rotation.y = Math.cos((et + index * 2000) / 2) / 10
-          child.rotation.z = Math.sin((et + index * 2000) / 3) / 10
-        })
-      })
-
-    return (
-        <group ref={group} {...props} dispose={null}>
-        <group
-
-          position={[0.06, 4.04, 0.35]}
-          scale={[0.25, 0.25, 0.25]}>
-          <mesh name="Headphones" geometry={nodes.Headphones.geometry} material={materials.M_Headphone} {...extras} />
-          <mesh name="Notebook" geometry={nodes.Notebook.geometry} material={materials.M_Notebook} {...extras} />
-          <mesh name="Rocket003" geometry={nodes.Rocket003.geometry} material={materials.M_Rocket} {...extras} />
-          <mesh name="Roundcube001" geometry={nodes.Roundcube001.geometry} material={materials.M_Roundcube} {...extras} />
-          <mesh name="Table" geometry={nodes.Table.geometry} material={materials.M_Table} {...extras} />
-          <mesh name="VR_Headset" geometry={nodes.VR_Headset.geometry} material={materials.M_Headset} {...extras} />
-          <mesh name="Zeppelin" geometry={nodes.Zeppelin.geometry} material={materials.M_Zeppelin} v />
-        </group>
-        <group name="Camera" position={[-1.78, 2.04, 23.58]} rotation={[1.62, 0.01, 0.11]}>
-        <PerspectiveCamera makeDefault far={100} near={0.1} fov={28} rotation={[-Math.PI / 2, 0, 0]}>
+  return (
+    <group ref={group} {...props} dispose={null}>
+      <group name="Scene">
+        <mesh
+          name="Name"
+          castShadow
+          receiveShadow
+          geometry={nodes.Name.geometry}
+          material={materials.Schrift}
+          position={[1.2, 1.2, -1]}
+          rotation={[Math.PI / 2, 0, 0]}
+        />
+        <mesh
+          name="Object"
+          castShadow
+          receiveShadow
+          geometry={nodes.Object.geometry}
+          material={materials.painted_plaster_wall}
+          position={[0, 1, 0]}
+        />
+        <mesh
+          name="Portfolio"
+          castShadow
+          receiveShadow
+          geometry={nodes.Portfolio.geometry}
+          material={materials.Schrift}
+          position={[-1.8, -2.8, 6]}
+          rotation={[Math.PI / 2, 0, 0]}
+        />
+        <OrthographicCamera
+          name="Camera"
+          makeDefault={true}
+          far={184.1}
+          near={0.001}
+          position={[7, 4, 7]}
+          rotation={[-0.645, 0.674, 0.439]}
+          zoom={100}
+        >
           <directionalLight
             castShadow
             position={[10, 20, 15]}
@@ -59,10 +85,10 @@ export default function Model({ ...props }) {
             intensity={2}
             shadow-bias={-0.0001}
           />
-        </PerspectiveCamera>
+        </OrthographicCamera>
       </group>
     </group>
   )
 }
 
-useGLTF.preload("./models/model.glb")
+useGLTF.preload("./models/ortho_01.glb")
