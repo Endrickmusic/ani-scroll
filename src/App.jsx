@@ -16,9 +16,9 @@ export default function App() {
   return (
     <>
       <Canvas shadows camera={{ position: [0, 0, 4], fov: 40 }}>
-        <Environment preset="city" />
+        {/* <Environment preset="forest" /> */}
         <color attach="background" args={["#222222"]} />
-        <ambientLight intensity={0.1} />
+        <ambientLight intensity={0.0} />
 
         <ScrollControls pages={4}>
           <Model />
