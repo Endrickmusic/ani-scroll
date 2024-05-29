@@ -48,12 +48,12 @@ export default function Model({ ...props }) {
           rotation={[Math.PI / 2, 0, 0]}
         />
         <mesh
-          name="Object"
+          name="Object001"
           castShadow
           receiveShadow
-          geometry={nodes.Object.geometry}
+          geometry={nodes.Object001.geometry}
           material={materials.painted_plaster_wall}
-          position={[0, 1, 0]}
+          position={[6, -11, 6]}
         />
         <mesh
           name="Portfolio"
@@ -80,8 +80,8 @@ export default function Model({ ...props }) {
             shadow-camera-top={8}
             shadow-camera-left={-8}
             shadow-camera-bottom={-8}
-            shadow-mapSize-width={1024}
-            shadow-mapSize-height={1024}
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
             intensity={3}
             shadow-bias={-0.0001}
           />
