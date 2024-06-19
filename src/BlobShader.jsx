@@ -113,12 +113,16 @@ export default function Shader() {
   useFrame((state) => {
     let time = state.clock.getElapsedTime()
 
-    // console.log("mousePosition", mousePosition.current)
+    console.log(
+      "mousePosition",
+      mousePosition.current.x / window.innerWidth,
+      mousePosition.current.y / window.innerHeight
+    )
 
     // meshRef.current.material.uniforms.uMouse.value = new Vector2(0, 0)
     meshRef.current.material.uniforms.uMouse.value = new Vector2(
-      mousePosition.current.x,
-      mousePosition.current.y
+      (mousePosition.current.x / window.innerWidth) * 2 - 1,
+      -(mousePosition.current.y / window.innerHeight) * 2 + 1
     )
 
     meshRef.current.material.uniforms.uTime.value = time * speed

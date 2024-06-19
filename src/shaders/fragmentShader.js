@@ -65,6 +65,7 @@ float map(in vec3 p) {
     res = opSmoothUnion(res, sphere(p - vec3(3., 0., 1.) - offset, r), 0.75);
     // res = opSmoothUnion(res, sphere(p - vec3(7., 0., 7.), r), 0.75);
   }
+    res = opSmoothUnion(res, sphere(p - vec3(uMouse.x * 15., uMouse.y * 15., 1.0), .5), 0.75);
   return res;
 }
 
