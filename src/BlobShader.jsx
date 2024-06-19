@@ -149,6 +149,12 @@ export default function Shader() {
     meshRef.current.material.uniforms.uRefractPower.value = refract
     meshRef.current.material.uniforms.uChromaticAbberation.value =
       chromaticAbberation
+    meshRef.current.material.uniforms.uResolution.value = new Vector2(
+      state.size.width,
+      state.size.height
+    )
+
+    console.log(meshRef.current.material.uniforms.uResolution.value)
 
     // FBO
     state.gl.setRenderTarget(buffer)
@@ -176,9 +182,9 @@ export default function Shader() {
       },
       uResolution: {
         type: "v2",
-        value: new Vector2(viewport.width, viewport.height).multiplyScalar(
-          Math.min(window.devicePixelRatio, 2)
-        ),
+        value: new Vector2(size.width, size.height),
+        // value: new Vector2(viewport.width, viewport.height).multiplyScalar(
+        //   Math.min(window.devicePixelRatio, 2)
       },
       uTexture: {
         type: "sampler2D",
@@ -255,6 +261,12 @@ export default function Shader() {
           transparent={true}
         />
       </mesh> */}
+      {/* <Image
+        texture={buffer.texture}
+        scale={[viewport.width / 5, viewport.height / 5, 1]}
+        position={[-4, 2, 4]}
+        rotation={[0, Math.PI / 4, 0]}
+      /> */}
     </>
   )
 }
