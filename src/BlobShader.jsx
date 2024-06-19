@@ -246,6 +246,15 @@ export default function Shader() {
           transparent={true}
         />
       </mesh>
+      {/* <mesh ref={meshRef} scale={8} position={[4, -2, 1]} rotation={[0, 0, 0]}>
+        <boxGeometry args={[1, 1, 1]} />
+        <shaderMaterial
+          uniforms={uniforms}
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShader}
+          transparent={true}
+        />
+      </mesh> */}
     </>
   )
 }
