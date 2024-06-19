@@ -6,12 +6,12 @@ import {
   OrbitControls,
 } from "@react-three/drei"
 import { useFrame, useThree } from "@react-three/fiber"
-import { useRef, useMemo, useEffect, useCallback, useState } from "react"
+import { useRef, useMemo, useEffect, useCallback } from "react"
 import { useControls } from "leva"
 
 import vertexShader from "./shaders/vertexShader.js"
 import fragmentShader from "./shaders/fragmentShader.js"
-import { Vector2, Vector3, MathUtils, Matrix4 } from "three"
+import { Vector2, Vector3, MathUtils } from "three"
 
 export default function Shader() {
   const meshRef = useRef()
@@ -19,6 +19,13 @@ export default function Shader() {
   const viewport = useThree((state) => state.viewport)
   const scene = useThree((state) => state.scene)
   const camera = useThree((state) => state.camera)
+
+  const nearPlaneWidth =
+    camera.near *
+    Math.tan(MathUtils.degToRad(camera.fov / 2)) *
+    camera.aspect *
+    2
+  const nearPlaneHeight = nearPlaneWidth / camera.aspect
 
   const mousePosition = useRef({ x: 0, y: 0 })
 
@@ -32,8 +39,6 @@ export default function Shader() {
     ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"],
     { path: "./cubemap/potsdamer_platz/" }
   )
-
-  const [worldToObjectMatrix, setWorldToObjectMatrix] = useState(new Matrix4())
 
   const {
     reflection,
@@ -70,10 +75,10 @@ export default function Shader() {
       step: 1,
     },
     size: {
-      value: 1.0,
-      min: 0.1,
-      max: 2.5,
-      step: 0.01,
+      value: 0.005,
+      min: 0.001,
+      max: 0.5,
+      step: 0.001,
     },
     dispersion: {
       value: 0.03,
@@ -96,24 +101,6 @@ export default function Shader() {
   })
 
   useEffect(() => {
-    const object = meshRef.current
-
-    if (object) {
-      object.updateMatrixWorld()
-      const worldMatrix = object.matrixWorld
-      const inverseMatrix = new Matrix4().copy(worldMatrix).invert()
-      setWorldToObjectMatrix(inverseMatrix)
-      console.log("World to Object Matrix:", inverseMatrix)
-      meshRef.current.material.uniforms.uInverseModelMat.value = inverseMatrix
-      meshRef.current.updateMatrixWorld()
-    }
-  }, [
-    meshRef.current?.position,
-    meshRef.current?.rotation,
-    meshRef.current?.scale,
-  ])
-
-  useEffect(() => {
     window.addEventListener("mousemove", updateMousePosition, false)
     console.log("mousePosition", mousePosition)
     return () => {
@@ -126,14 +113,9 @@ export default function Shader() {
   useFrame((state) => {
     let time = state.clock.getElapsedTime()
 
-    if (meshRef.current) {
-    }
+    // console.log("mousePosition", mousePosition.current)
 
-    // Update the uniform
-
-    meshRef.current.material.uniforms.uCamPos.value = camera.position
     // meshRef.current.material.uniforms.uMouse.value = new Vector2(0, 0)
-
     meshRef.current.material.uniforms.uMouse.value = new Vector2(
       mousePosition.current.x,
       mousePosition.current.y
@@ -150,7 +132,20 @@ export default function Shader() {
     meshRef.current.material.uniforms.uChromaticAbberation.value =
       chromaticAbberation
 
-    // FBO
+    cameraForwardPos = camera.position
+      .clone()
+      .add(
+        camera
+          .getWorldDirection(new Vector3(0, 0, 0))
+          .multiplyScalar(camera.near)
+      )
+    meshRef.current.position.copy(cameraForwardPos)
+    meshRef.current.rotation.copy(camera.rotation)
+
+    // This is entirely optional but spares us one extra render of the scene
+    // The createPortal below will mount the children of <Lens> into the new THREE.Scene above
+    // The following code will render that scene into a buffer, whose texture will then be fed into
+    // a plane spanning the full screen and the lens transmission material
     state.gl.setRenderTarget(buffer)
     state.gl.setClearColor("#d8d7d7")
     state.gl.render(scene, state.camera)
@@ -163,9 +158,6 @@ export default function Shader() {
       uCamPos: { value: camera.position },
       uCamToWorldMat: { value: camera.matrixWorld },
       uCamInverseProjMat: { value: camera.projectionMatrixInverse },
-      uInverseModelMat: {
-        value: new Matrix4(),
-      },
       uTime: {
         type: "f",
         value: 1.0,
@@ -230,15 +222,14 @@ export default function Shader() {
 
   return (
     <>
-      {/* <OrbitControls />
-
-      <mesh position={[0, 0.5, -4]} rotation={[2, 4, 1]}>
+      {/* <OrbitControls /> */}
+      {/* <mesh position={[0, 0.5, -4]} rotation={[2, 4, 1]}>
         <boxGeometry />
         <meshNormalMaterial />
       </mesh> */}
 
-      <mesh ref={meshRef} scale={2.5} position={[2, -0.7, 2]}>
-        <boxGeometry args={[1, 1, 1]} />
+      <mesh ref={meshRef} scale={[nearPlaneWidth, nearPlaneHeight, 1]}>
+        <planeGeometry args={[1, 1]} />
         <shaderMaterial
           uniforms={uniforms}
           vertexShader={vertexShader}

@@ -6,6 +6,7 @@ import {
   useAnimations,
   OrthographicCamera,
   useScroll,
+  PerspectiveCamera,
 } from "@react-three/drei"
 
 export default function Model({ ...props }) {
@@ -64,14 +65,14 @@ export default function Model({ ...props }) {
           position={[-1.8, -2.8, 6]}
           rotation={[Math.PI / 2, 0, 0]}
         />
-        <OrthographicCamera
+        <PerspectiveCamera
           name="Camera"
           makeDefault={true}
-          far={184.1}
-          near={0.001}
+          // far={184.1}
+          // near={0.001}
           position={[7, 4, 7]}
           rotation={[-0.645, 0.674, 0.439]}
-          zoom={100}
+          // zoom={100}
         >
           <directionalLight
             castShadow
@@ -85,7 +86,7 @@ export default function Model({ ...props }) {
             intensity={3}
             shadow-bias={-0.0001}
           />
-        </OrthographicCamera>
+        </PerspectiveCamera>
       </group>
     </group>
   )
