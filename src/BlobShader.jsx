@@ -20,13 +20,6 @@ export default function Shader() {
   const scene = useThree((state) => state.scene)
   const camera = useThree((state) => state.camera)
 
-  const nearPlaneWidth =
-    camera.near *
-    Math.tan(MathUtils.degToRad(camera.fov / 2)) *
-    camera.aspect *
-    2
-  const nearPlaneHeight = nearPlaneWidth / camera.aspect
-
   const mousePosition = useRef({ x: 0, y: 0 })
 
   const updateMousePosition = useCallback((e) => {
@@ -237,14 +230,14 @@ export default function Shader() {
 
   return (
     <>
-      <OrbitControls />
+      {/* <OrbitControls />
 
       <mesh position={[0, 0.5, -4]} rotation={[2, 4, 1]}>
         <boxGeometry />
         <meshNormalMaterial />
-      </mesh>
+      </mesh> */}
 
-      <mesh ref={meshRef} scale={[2, 2, 2]} position={[0, 0, 0]}>
+      <mesh ref={meshRef} scale={2.5} position={[2, -0.7, 2]}>
         <boxGeometry args={[1, 1, 1]} />
         <shaderMaterial
           uniforms={uniforms}

@@ -11,6 +11,7 @@ import "./index.css"
 
 import Model from "./Model.jsx"
 import Overlay from "./Overlay.jsx"
+import BlobShader from "./BlobShader.jsx"
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Model />
 
           {/* <Overlay /> */}
+          <BlobShader />
         </ScrollControls>
       </Canvas>
     </>

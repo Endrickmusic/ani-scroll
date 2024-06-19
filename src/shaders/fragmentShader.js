@@ -72,7 +72,7 @@ float GetDist(vec3 p) {
 		vec3 offset = .5 * sin(hash3(fi)) * cos(uTime + float(i));
 		d = opSmoothUnion(d, sdSphere(p - offset, r), 0.3);
 	}
-  d = opSmoothUnion(d, sdBox(p - vec3(0., -.5, 0.), vec3(0.4, 0.01, 0.4)), 0.3);
+  d = opSmoothUnion(d, sdBox(p - vec3(0., -.5, 0.), vec3(0.5, 0.01, 0.5)), 0.3);
 	return d;
 }
 
