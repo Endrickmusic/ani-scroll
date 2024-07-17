@@ -33,9 +33,12 @@ export default function Model({ ...props }) {
   }
 
   console.log(actions)
-  console.log(actions)
 
-  useEffect(() => void (actions["CameraAction"].play().paused = true), [])
+  useEffect(() => {
+    // initialize animation
+    actions["CameraAction"].play().paused = true
+    actions["NameAction"].play().paused = true
+  }, [])
 
   useFrame((state) => {
     const scroll = scrolling.offset
@@ -50,11 +53,19 @@ export default function Model({ ...props }) {
     // textRef.current.material.opacity = 1 - scroll
     // textRef.current.material.transparent = true
 
+    // console.log(scroll)
+
     actions["CameraAction"].time = MathUtils.lerp(
       actions["CameraAction"].time,
       actions["CameraAction"].getClip().duration * scroll,
       0.05
     )
+    // Camera move animation
+    if (scroll <= 1) {
+      const nameActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.2, 0, 1)
+      actions["NameAction"].time =
+        nameActionProgress * actions["NameAction"].getClip().duration
+    }
   })
 
   return (
@@ -77,14 +88,6 @@ export default function Model({ ...props }) {
           material={materials.painted_plaster_wall}
           position={[-0.9, -1.7, 12.917]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-        />
-        <OrthographicCamera
-          name="Camera"
-          makeDefault={false}
-          far={184.1}
-          near={0.001}
-          position={[7, 4, 7]}
-          rotation={[-0.645, 0.674, 0.439]}
         />
         <mesh
           name="Object"
@@ -211,13 +214,14 @@ export default function Model({ ...props }) {
           makeDefault={true}
           far={184.1}
           near={0.001}
-          position={[7, 4.5, 7]}
+          position={[7, 7, 7]}
           rotation={[-0.645, 0.674, 0.439]}
-          zoom={72}
+          zoom={68}
         >
           <directionalLight
             castShadow
             position={[10, 20, 15]}
+            rotation={[0, Math.PI / 4, 0]}
             shadow-camera-right={8}
             shadow-camera-top={8}
             shadow-camera-left={-8}

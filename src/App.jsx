@@ -25,7 +25,7 @@ export default function App() {
           <Model />
 
           {/* <Overlay /> */}
-          <BlobShader />
+          {/* <BlobShader /> */}
         </ScrollControls>
       </Canvas>
     </>
