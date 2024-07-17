@@ -38,6 +38,10 @@ export default function Model({ ...props }) {
     // initialize animation
     actions["CameraAction"].play().paused = true
     actions["NameAction"].play().paused = true
+    actions["PortfolioAction"].play().paused = true
+    actions["Work1Action"].play().paused = true
+    actions["Ocean_01"].play().paused = true
+    actions["Ocean_02"].play().paused = true
   }, [])
 
   useFrame((state) => {
@@ -61,10 +65,32 @@ export default function Model({ ...props }) {
       0.05
     )
     // Camera move animation
-    if (scroll <= 1) {
-      const nameActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.2, 0, 1)
+    if (scroll < 0.3) {
+      const nameActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.3, 0, 1)
       actions["NameAction"].time =
         nameActionProgress * actions["NameAction"].getClip().duration
+    } else {
+      setNameIsVisible(false)
+    }
+    if (scroll <= 1) {
+      const nameActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.15, 0, 1)
+      actions["PortfolioAction"].time =
+        nameActionProgress * actions["PortfolioAction"].getClip().duration
+    }
+    if (scroll <= 0.5) {
+      const work1ActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.2, 0, 1)
+      actions["Work1Action"].time =
+        work1ActionProgress * actions["Work1Action"].getClip().duration
+    }
+    if (scroll <= 1) {
+      const ocean1ActionProgress = MathUtils.mapLinear(scroll, 0.2, 0.5, 0, 1)
+      actions["Ocean_01"].time =
+        ocean1ActionProgress * actions["Ocean_01"].getClip().duration
+    }
+    if (scroll <= 1) {
+      const ocean2ActionProgress = MathUtils.mapLinear(scroll, 0.2, 0.5, 0, 1)
+      actions["Ocean_02"].time =
+        ocean2ActionProgress * actions["Ocean_02"].getClip().duration
     }
   })
 
@@ -79,6 +105,7 @@ export default function Model({ ...props }) {
           material={materials.painted_plaster_wall}
           position={[1.2, 1.2, -1]}
           rotation={[Math.PI / 2, 0, 0]}
+          visible={nameIsVisible}
         />
         <mesh
           name="Portfolio"
@@ -86,7 +113,7 @@ export default function Model({ ...props }) {
           receiveShadow
           geometry={nodes.Portfolio.geometry}
           material={materials.painted_plaster_wall}
-          position={[-0.9, -1.7, 12.917]}
+          position={[-1.4, -1.7, 12.917]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
         />
         <mesh
@@ -103,7 +130,7 @@ export default function Model({ ...props }) {
           receiveShadow
           geometry={nodes.Work1.geometry}
           material={materials.painted_plaster_wall}
-          position={[-15.955, 0.91, 0.929]}
+          position={[-2.955, 0.91, 0.929]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
         />
         <mesh
@@ -114,6 +141,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[-0.308, -5.8, 1.643]}
           rotation={[-Math.PI, -Math.PI / 2, 0]}
+          visible={true}
         />
         <mesh
           name="Works3"
@@ -123,6 +151,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[1.71, -9.12, 6]}
           rotation={[Math.PI / 2, -Math.PI / 2, 0]}
+          visible={true}
         />
         <mesh
           name="Contact"
@@ -140,6 +169,7 @@ export default function Model({ ...props }) {
           geometry={nodes.Imprint.geometry}
           material={materials.Schrift}
           position={[3.584, -2.8, 6.28]}
+          visible={false}
         />
         <mesh
           name="Ocean_01"
@@ -187,6 +217,7 @@ export default function Model({ ...props }) {
           material={materials.ColorCube_02}
           position={[4.046, -7.916, 8.641]}
           rotation={[Math.PI / 2, 0, Math.PI]}
+          visible={false}
           scale={1.5}
         />
         <mesh
@@ -197,6 +228,7 @@ export default function Model({ ...props }) {
           material={materials.ColorCube_01}
           position={[2.039, -4.031, 8.641]}
           rotation={[Math.PI / 2, 0, Math.PI]}
+          visible={false}
           scale={1.5}
         />
         <mesh
@@ -208,6 +240,7 @@ export default function Model({ ...props }) {
           position={[-4.353, -1.382, 7.441]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[1, 0.938, 1.333]}
+          visible={false}
         />
         <OrthographicCamera
           name="Camera"
