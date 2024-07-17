@@ -11,7 +11,9 @@ import {
 export default function Model({ ...props }) {
   const group = useRef()
   const textRef = useRef()
-  const { nodes, materials, animations } = useGLTF("./models/ortho_02.glb")
+  const { nodes, materials, animations } = useGLTF(
+    "./models/ortho_images_01.glb"
+  )
   const { actions } = useAnimations(animations, group)
 
   const [nameIsVisible, setNameIsVisible] = useState(true)
@@ -31,22 +33,22 @@ export default function Model({ ...props }) {
   }
 
   console.log(actions)
+  console.log(actions)
 
   useEffect(() => void (actions["CameraAction"].play().paused = true), [])
 
   useFrame((state) => {
     const scroll = scrolling.offset
-    setNameIsVisible(scrolling.offset > -0.1 && scrolling.offset < 0.1)
-    setWorksIsVisible(scrolling.offset > 0.11 && scrolling.offset < 0.24)
-    setProjectsIsVisible(scrolling.offset > 0.18 && scrolling.offset < 0.33)
-    setWorks2IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
-    setWorks3IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
-    setProjects2IsVisible(scrolling.offset > 0.54 && scrolling.offset < 0.78)
-    setContactIsVisible(scrolling.offset > 0.68 && scrolling.offset < 0.85)
-    console.log(scrolling.offset)
+    // setNameIsVisible(scrolling.offset > -0.1 && scrolling.offset < 0.1)
+    // setWorksIsVisible(scrolling.offset > 0.11 && scrolling.offset < 0.24)
+    // setProjectsIsVisible(scrolling.offset > 0.18 && scrolling.offset < 0.33)
+    // setWorks2IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
+    // setWorks3IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
+    // setProjects2IsVisible(scrolling.offset > 0.54 && scrolling.offset < 0.78)
+    // setContactIsVisible(scrolling.offset > 0.68 && scrolling.offset < 0.85)
 
     // textRef.current.material.opacity = 1 - scroll
-    textRef.current.material.transparent = true
+    // textRef.current.material.transparent = true
 
     actions["CameraAction"].time = MathUtils.lerp(
       actions["CameraAction"].time,
@@ -63,49 +65,43 @@ export default function Model({ ...props }) {
           castShadow
           receiveShadow
           geometry={nodes.Name.geometry}
-          material={materials.Schrift}
+          material={materials.painted_plaster_wall}
           position={[1.2, 1.2, -1]}
           rotation={[Math.PI / 2, 0, 0]}
-          ref={textRef}
-          visible={nameIsVisible}
         />
         <mesh
           name="Portfolio"
           castShadow
           receiveShadow
           geometry={nodes.Portfolio.geometry}
-          material={materials.Schrift}
-          position={[-1.8, -2.8, 6]}
-          rotation={[Math.PI / 2, 0, 0]}
-          visible={nameIsVisible}
+          material={materials.painted_plaster_wall}
+          position={[-0.9, -1.7, 12.917]}
+          rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+        />
+        <OrthographicCamera
+          name="Camera"
+          makeDefault={false}
+          far={184.1}
+          near={0.001}
+          position={[7, 4, 7]}
+          rotation={[-0.645, 0.674, 0.439]}
         />
         <mesh
-          name="Object001"
+          name="Object"
           castShadow
           receiveShadow
-          geometry={nodes.Object001.geometry}
+          geometry={nodes.Object.geometry}
           material={materials.painted_plaster_wall}
           position={[6, -11, 6]}
         />
         <mesh
-          name="Works"
+          name="Work1"
           castShadow
           receiveShadow
-          geometry={nodes.Works.geometry}
-          material={materials.Schrift}
-          position={[5.692, -3.8, 1.038]}
-          rotation={[Math.PI / 2, 0, -Math.PI / 4]}
-          visible={WorksIsVisible}
-        />
-        <mesh
-          name="Projects"
-          castShadow
-          receiveShadow
-          geometry={nodes.Projects.geometry}
-          material={materials.Schrift}
-          position={[7.692, -5.8, -1.182]}
+          geometry={nodes.Work1.geometry}
+          material={materials.painted_plaster_wall}
+          position={[-15.955, 0.91, 0.929]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
-          visible={ProjectsIsVisible}
         />
         <mesh
           name="Works2"
@@ -113,9 +109,8 @@ export default function Model({ ...props }) {
           receiveShadow
           geometry={nodes.Works2.geometry}
           material={materials.Schrift}
-          position={[-0.308, -5.8, 2.233]}
+          position={[-0.308, -5.8, 1.643]}
           rotation={[-Math.PI, -Math.PI / 2, 0]}
-          visible={Works2IsVisible}
         />
         <mesh
           name="Works3"
@@ -123,37 +118,102 @@ export default function Model({ ...props }) {
           receiveShadow
           geometry={nodes.Works3.geometry}
           material={materials.Schrift}
-          position={[1.2, -8.8, 6]}
+          position={[1.71, -9.12, 6]}
           rotation={[Math.PI / 2, -Math.PI / 2, 0]}
-          visible={Works3IsVisible}
-        />
-        <mesh
-          name="Projects2"
-          castShadow
-          receiveShadow
-          geometry={nodes.Projects2.geometry}
-          material={materials.Schrift}
-          position={[7.692, -8.345, -0.182]}
-          rotation={[0, 0, -Math.PI / 2]}
-          visible={Projects2IsVisible}
         />
         <mesh
           name="Contact"
           castShadow
           receiveShadow
           geometry={nodes.Contact.geometry}
+          material={materials.painted_plaster_wall}
+          position={[7.692, -8.655, 2.298]}
+          rotation={[0, 0, -Math.PI / 2]}
+        />
+        <mesh
+          name="Imprint"
+          castShadow
+          receiveShadow
+          geometry={nodes.Imprint.geometry}
           material={materials.Schrift}
-          position={[3.184, -2.8, 6]}
-          visible={ContactIsVisible}
+          position={[3.584, -2.8, 6.28]}
+        />
+        <mesh
+          name="Ocean_01"
+          castShadow
+          receiveShadow
+          geometry={nodes.Ocean_01.geometry}
+          material={materials.Ocean_01}
+          position={[-4.353, -1.382, 7.441]}
+        />
+        <mesh
+          name="Ocean_02"
+          castShadow
+          receiveShadow
+          geometry={nodes.Ocean_02.geometry}
+          material={materials.Ocean_02}
+          position={[8.677, -3.894, -2.549]}
+          rotation={[0, 0, -Math.PI / 2]}
+          scale={1.5}
+        />
+        <mesh
+          name="Dance_01"
+          castShadow
+          receiveShadow
+          geometry={nodes.Dance_01.geometry}
+          material={materials.Dance_02}
+          position={[4.102, -8.278, 1.036]}
+          rotation={[Math.PI, 0, Math.PI]}
+          scale={1.5}
+        />
+        <mesh
+          name="Dance_02"
+          castShadow
+          receiveShadow
+          geometry={nodes.Dance_02.geometry}
+          material={materials.Dance_01}
+          position={[2.096, -10.359, 5.076]}
+          rotation={[-Math.PI, 0, 0]}
+          scale={1.5}
+        />
+        <mesh
+          name="Color_cube_02"
+          castShadow
+          receiveShadow
+          geometry={nodes.Color_cube_02.geometry}
+          material={materials.ColorCube_02}
+          position={[4.046, -7.916, 8.641]}
+          rotation={[Math.PI / 2, 0, Math.PI]}
+          scale={1.5}
+        />
+        <mesh
+          name="Color_cube_01"
+          castShadow
+          receiveShadow
+          geometry={nodes.Color_cube_01.geometry}
+          material={materials.ColorCube_01}
+          position={[2.039, -4.031, 8.641]}
+          rotation={[Math.PI / 2, 0, Math.PI]}
+          scale={1.5}
+        />
+        <mesh
+          name="Contact_Pic_01"
+          castShadow
+          receiveShadow
+          geometry={nodes.Contact_Pic_01.geometry}
+          material={materials.Endrick}
+          position={[-4.353, -1.382, 7.441]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          scale={[1, 0.938, 1.333]}
         />
         <OrthographicCamera
           name="Camera"
           makeDefault={true}
           far={184.1}
           near={0.001}
-          position={[7, 4, 7]}
+          position={[7, 4.5, 7]}
           rotation={[-0.645, 0.674, 0.439]}
-          zoom={100}
+          zoom={72}
         >
           <directionalLight
             castShadow
@@ -173,4 +233,4 @@ export default function Model({ ...props }) {
   )
 }
 
-useGLTF.preload("./models/ortho_01.glb")
+useGLTF.preload("./models/ortho_images_01.glb")
