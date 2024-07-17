@@ -16,7 +16,7 @@ import BlobShader from "./BlobShader.jsx"
 export default function App() {
   return (
     <>
-      <Canvas shadows camera={{ position: [0, 0, 4], fov: 40 }}>
+      <Canvas shadows camera={{ position: [0, 0, 4], fov: 140 }}>
         {/* <Environment preset="forest" /> */}
         <color attach="background" args={["#111111"]} />
         <ambientLight intensity={0.0} />

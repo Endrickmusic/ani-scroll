@@ -13,6 +13,7 @@ export default function Model({ ...props }) {
   const textRef = useRef()
   const { nodes, materials, animations } = useGLTF("./models/ortho_02.glb")
   const { actions } = useAnimations(animations, group)
+  const animationDuration = actions["CameraAction"].getClip().duration
 
   const [nameIsVisible, setNameIsVisible] = useState(true)
   const [WorksIsVisible, setWorksIsVisible] = useState(false)
@@ -35,9 +36,11 @@ export default function Model({ ...props }) {
   useEffect(() => void (actions["CameraAction"].play().paused = true), [])
 
   useFrame((state) => {
-    const scroll = scrolling.offset
+    const scroll = scrolling.offset % 1
+    const targetTime = (scroll * animationDuration) % animationDuration
+
     setNameIsVisible(scrolling.offset > -0.1 && scrolling.offset < 0.1)
-    setWorksIsVisible(scrolling.offset > 0.11 && scrolling.offset < 0.24)
+    setWorksIsVisible(scrolling.offset > 0.11 && scrolling.offset < 0.23)
     setProjectsIsVisible(scrolling.offset > 0.18 && scrolling.offset < 0.33)
     setWorks2IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
     setWorks3IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
@@ -48,11 +51,23 @@ export default function Model({ ...props }) {
     // textRef.current.material.opacity = 1 - scroll
     textRef.current.material.transparent = true
 
+    // actions["CameraAction"].time = MathUtils.lerp(
+    //   actions["CameraAction"].time,
+    //   actions["CameraAction"].getClip().duration * scroll,
+    //   0.05
+    // )
+    // Smoothly interpolate to the target time
     actions["CameraAction"].time = MathUtils.lerp(
       actions["CameraAction"].time,
-      actions["CameraAction"].getClip().duration * scroll,
+      targetTime,
       0.05
     )
+
+    // Ensure the animation doesn't stop at the end
+    if (actions["CameraAction"].time >= animationDuration) {
+      actions["CameraAction"].time =
+        actions["CameraAction"].time % animationDuration
+    }
   })
 
   return (
@@ -93,7 +108,7 @@ export default function Model({ ...props }) {
           receiveShadow
           geometry={nodes.Works.geometry}
           material={materials.Schrift}
-          position={[5.692, -3.8, 1.038]}
+          position={[1.292, -1.8, 8.338]}
           rotation={[Math.PI / 2, 0, -Math.PI / 4]}
           visible={WorksIsVisible}
         />
@@ -115,6 +130,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[-0.308, -5.8, 2.233]}
           rotation={[-Math.PI, -Math.PI / 2, 0]}
+          scale={1.2}
           visible={Works2IsVisible}
         />
         <mesh
@@ -125,6 +141,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[1.2, -8.8, 6]}
           rotation={[Math.PI / 2, -Math.PI / 2, 0]}
+          scale={1.5}
           visible={Works3IsVisible}
         />
         <mesh
@@ -135,6 +152,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[7.692, -8.345, -0.182]}
           rotation={[0, 0, -Math.PI / 2]}
+          scale={1.2}
           visible={Projects2IsVisible}
         />
         <mesh
@@ -153,7 +171,7 @@ export default function Model({ ...props }) {
           near={0.001}
           position={[7, 4, 7]}
           rotation={[-0.645, 0.674, 0.439]}
-          zoom={100}
+          zoom={65}
         >
           <directionalLight
             castShadow

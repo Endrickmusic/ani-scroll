@@ -35,14 +35,14 @@ export default function Shader() {
 
   const [worldToObjectMatrix, setWorldToObjectMatrix] = useState(new Matrix4())
 
-  const reflection = 1.5
+  const reflection = 1.2
   const speed = 0.5
-  const IOR = 0.84
-  const count = 3
+  const IOR = 0.0
+  const count = 5
   const size = 1.0
-  const dispersion = 0.03
-  const refract = 0.15
-  const chromaticAbberation = 0.5
+  const dispersion = 0.0
+  const refract = 0.0
+  const chromaticAbberation = 0.0
 
   // const {
   //   reflection,

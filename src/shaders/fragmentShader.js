@@ -127,16 +127,17 @@ vec3 GetNormal(in vec3 p) {
 
 		if ( d >= MAX_DIST )
 			discard;
+			// gl_FragColor = vec4(0.2);
 		else {
 			vec3 p = ro + rd * d;
 			vec3 n = GetNormal(p);
         
         // Convert the 3D position on the sphere to 2D UV coordinates
-        float u = 0.5 + atan(n.z, n.x) / (2.0 * PI);
-        float v = 0.5 - asin(n.y) / PI;
-        vec2 sphereUV = vec2(u, v);
+        // float u = 0.5 + atan(n.z, n.x) / (2.0 * PI);
+        // float v = 0.5 - asin(n.y) / PI;
+        // vec2 sphereUV = vec2(u, v);
 
-        // vec2 sphereUV = vec2(0.5 + atan(p.z, p.x) / (2.0 * PI), 0.5 - asin(p.y) / PI);
+        vec2 sphereUV = vec2(0.5 + atan(p.z, p.x) / (2.0 * PI), 0.5 - asin(p.y) / PI);
 
       // lighting 
       vec3 lightDir = normalize(vec3(0.0, 2.0, 0.0)); 
@@ -172,7 +173,7 @@ vec3 GetNormal(in vec3 p) {
 
     color = mix(color, refOutside, fresnel); 
         
-		color = pow(color, vec3(.555));
+		color = pow(color, vec3(.455));
         // color = vec3(uv, 0.0);
 		gl_FragColor = vec4(color, 1.0);
 		}
