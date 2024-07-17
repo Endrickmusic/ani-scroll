@@ -17,12 +17,19 @@ export default function Model({ ...props }) {
   const { actions } = useAnimations(animations, group)
 
   const [nameIsVisible, setNameIsVisible] = useState(true)
-  const [WorksIsVisible, setWorksIsVisible] = useState(false)
-  const [ProjectsIsVisible, setProjectsIsVisible] = useState(false)
-  const [Works2IsVisible, setWorks2IsVisible] = useState(false)
-  const [Works3IsVisible, setWorks3IsVisible] = useState(false)
-  const [Projects2IsVisible, setProjects2IsVisible] = useState(false)
-  const [ContactIsVisible, setContactIsVisible] = useState(false)
+  const [portfolioIsVisible, setPortfolioIsVisible] = useState(true)
+  const [works1IsVisible, setWorks1IsVisible] = useState(false)
+  const [ocean1IsVisible, setOcean1IsVisible] = useState(true)
+  const [ocean2IsVisible, setOcean2IsVisible] = useState(true)
+  const [works2IsVisible, setWorks2IsVisible] = useState(false)
+  const [works3IsVisible, setWorks3IsVisible] = useState(false)
+  const [contactIsVisible, setContactIsVisible] = useState(true)
+  const [imprintIsVisible, setImprintIsVisible] = useState(false)
+  const [dance1IsVisible, setDance1IsVisible] = useState(false)
+  const [dance2IsVisible, setDance2IsVisible] = useState(false)
+  const [colorcube1IsVisible, setColorcube1IsVisible] = useState(false)
+  const [colorcube2IsVisible, setColorcube2IsVisible] = useState(false)
+  const [contactPicIsVisible, setContactPicIsVisible] = useState(true)
 
   const scrolling = useScroll()
 
@@ -46,18 +53,34 @@ export default function Model({ ...props }) {
 
   useFrame((state) => {
     const scroll = scrolling.offset
-    // setNameIsVisible(scrolling.offset > -0.1 && scrolling.offset < 0.1)
-    // setWorksIsVisible(scrolling.offset > 0.11 && scrolling.offset < 0.24)
-    // setProjectsIsVisible(scrolling.offset > 0.18 && scrolling.offset < 0.33)
-    // setWorks2IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
-    // setWorks3IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
-    // setProjects2IsVisible(scrolling.offset > 0.54 && scrolling.offset < 0.78)
-    // setContactIsVisible(scrolling.offset > 0.68 && scrolling.offset < 0.85)
+
+    // Name
+    setNameIsVisible(scrolling.offset > -0.1 && scrolling.offset < 0.1)
+    // Portfolio
+    setPortfolioIsVisible(scrolling.offset > 0.1 && scrolling.offset < 0.2)
+    // Work 1
+    setWorks1IsVisible(scrolling.offset > 0.15 && scrolling.offset < 0.3)
+    setOcean1IsVisible(scrolling.offset > 0.15 && scrolling.offset < 0.3)
+    setOcean2IsVisible(scrolling.offset > 0.15 && scrolling.offset < 0.3)
+    // Works 2
+    setWorks2IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
+    setDance1IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
+    setDance2IsVisible(scrolling.offset > 0.23 && scrolling.offset < 0.44)
+    // Works 3
+    setWorks3IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
+    setColorcube1IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
+    setColorcube2IsVisible(scrolling.offset > 0.34 && scrolling.offset < 0.64)
+    // Contact
+    setContactIsVisible(scrolling.offset > 0.55 && scrolling.offset < 0.75)
+    setContactPicIsVisible(scrolling.offset > 0.55 && scrolling.offset < 0.75)
+    // Imprint
+    setImprintIsVisible(scrolling.offset > 0.68 && scrolling.offset < 0.85)
+    // Ende
 
     // textRef.current.material.opacity = 1 - scroll
     // textRef.current.material.transparent = true
 
-    // console.log(scroll)
+    console.log(scrolling.offset)
 
     actions["CameraAction"].time = MathUtils.lerp(
       actions["CameraAction"].time,
@@ -69,13 +92,17 @@ export default function Model({ ...props }) {
       const nameActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.3, 0, 1)
       actions["NameAction"].time =
         nameActionProgress * actions["NameAction"].getClip().duration
-    } else {
-      setNameIsVisible(false)
     }
     if (scroll <= 1) {
-      const nameActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.15, 0, 1)
+      const portfolioActionProgress = MathUtils.mapLinear(
+        scroll,
+        0.1,
+        0.16,
+        0,
+        1
+      )
       actions["PortfolioAction"].time =
-        nameActionProgress * actions["PortfolioAction"].getClip().duration
+        portfolioActionProgress * actions["PortfolioAction"].getClip().duration
     }
     if (scroll <= 0.5) {
       const work1ActionProgress = MathUtils.mapLinear(scroll, 0.1, 0.2, 0, 1)
@@ -91,6 +118,11 @@ export default function Model({ ...props }) {
       const ocean2ActionProgress = MathUtils.mapLinear(scroll, 0.2, 0.5, 0, 1)
       actions["Ocean_02"].time =
         ocean2ActionProgress * actions["Ocean_02"].getClip().duration
+    }
+    if (scroll <= 1) {
+      const contactPicProgress = MathUtils.mapLinear(scroll, 0.65, 0.75, 0, 1)
+      actions["Contact_Pic_01"].time =
+        contactPicProgress * actions["Contact_Pic_01"].getClip().duration
     }
   })
 
@@ -115,6 +147,7 @@ export default function Model({ ...props }) {
           material={materials.painted_plaster_wall}
           position={[-1.4, -1.7, 12.917]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+          visible={portfolioIsVisible}
         />
         <mesh
           name="Object"
@@ -132,6 +165,7 @@ export default function Model({ ...props }) {
           material={materials.painted_plaster_wall}
           position={[-2.955, 0.91, 0.929]}
           rotation={[Math.PI / 2, 0, -Math.PI / 2]}
+          visible={works1IsVisible}
         />
         <mesh
           name="Works2"
@@ -141,7 +175,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[-0.308, -5.8, 1.643]}
           rotation={[-Math.PI, -Math.PI / 2, 0]}
-          visible={true}
+          visible={works2IsVisible}
         />
         <mesh
           name="Works3"
@@ -151,7 +185,7 @@ export default function Model({ ...props }) {
           material={materials.Schrift}
           position={[1.71, -9.12, 6]}
           rotation={[Math.PI / 2, -Math.PI / 2, 0]}
-          visible={true}
+          visible={works3IsVisible}
         />
         <mesh
           name="Contact"
@@ -161,6 +195,7 @@ export default function Model({ ...props }) {
           material={materials.painted_plaster_wall}
           position={[7.692, -8.655, 2.298]}
           rotation={[0, 0, -Math.PI / 2]}
+          visible={contactIsVisible}
         />
         <mesh
           name="Imprint"
@@ -169,7 +204,7 @@ export default function Model({ ...props }) {
           geometry={nodes.Imprint.geometry}
           material={materials.Schrift}
           position={[3.584, -2.8, 6.28]}
-          visible={false}
+          visible={imprintIsVisible}
         />
         <mesh
           name="Ocean_01"
@@ -178,6 +213,7 @@ export default function Model({ ...props }) {
           geometry={nodes.Ocean_01.geometry}
           material={materials.Ocean_01}
           position={[-4.353, -1.382, 7.441]}
+          visible={ocean1IsVisible}
         />
         <mesh
           name="Ocean_02"
@@ -188,6 +224,7 @@ export default function Model({ ...props }) {
           position={[8.677, -3.894, -2.549]}
           rotation={[0, 0, -Math.PI / 2]}
           scale={1.5}
+          visible={ocean2IsVisible}
         />
         <mesh
           name="Dance_01"
@@ -198,6 +235,7 @@ export default function Model({ ...props }) {
           position={[4.102, -8.278, 1.036]}
           rotation={[Math.PI, 0, Math.PI]}
           scale={1.5}
+          visible={dance1IsVisible}
         />
         <mesh
           name="Dance_02"
@@ -208,6 +246,7 @@ export default function Model({ ...props }) {
           position={[2.096, -10.359, 5.076]}
           rotation={[-Math.PI, 0, 0]}
           scale={1.5}
+          visible={dance2IsVisible}
         />
         <mesh
           name="Color_cube_02"
@@ -217,8 +256,8 @@ export default function Model({ ...props }) {
           material={materials.ColorCube_02}
           position={[4.046, -7.916, 8.641]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          visible={false}
           scale={1.5}
+          visible={colorcube1IsVisible}
         />
         <mesh
           name="Color_cube_01"
@@ -228,8 +267,8 @@ export default function Model({ ...props }) {
           material={materials.ColorCube_01}
           position={[2.039, -4.031, 8.641]}
           rotation={[Math.PI / 2, 0, Math.PI]}
-          visible={false}
           scale={1.5}
+          visible={colorcube2IsVisible}
         />
         <mesh
           name="Contact_Pic_01"
@@ -240,7 +279,7 @@ export default function Model({ ...props }) {
           position={[-4.353, -1.382, 7.441]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[1, 0.938, 1.333]}
-          visible={false}
+          visible={contactPicIsVisible}
         />
         <OrthographicCamera
           name="Camera"
